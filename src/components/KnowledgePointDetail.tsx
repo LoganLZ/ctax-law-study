@@ -4,6 +4,16 @@ import { getKpById, getQuestionById, getSectionById } from '../utils/data';
 import { useStudyData } from '../hooks/useStudyData';
 import { formatContent } from '../utils/contentFormatter';
 
+/** Parse **text** markers into React elements with green-bold styling */
+function renderGreenBold(text: string) {
+  const parts = text.split(/\*\*/);
+  return parts.map((part, i) =>
+    i % 2 === 1
+      ? <strong key={i} className="font-bold" style={{ color: '#24b89a' }}>{part}</strong>
+      : part
+  );
+}
+
 export default function KnowledgePointDetail() {
   const { kpId } = useParams<{ kpId: string }>();
   const navigate = useNavigate();
@@ -61,7 +71,7 @@ export default function KnowledgePointDetail() {
                     fontFamily: 'var(--font-body)',
                   }}
                 >
-                  {block.text}
+                  {renderGreenBold(block.text)}
                 </div>
               );
             }
@@ -73,7 +83,7 @@ export default function KnowledgePointDetail() {
                 className={isHeading ? 'font-semibold font-display mt-3' : 'mt-1.5'}
                 style={isHeading ? { color: 'var(--color-primary-dark)' } : undefined}
               >
-                {block.text}
+                {renderGreenBold(block.text)}
               </p>
             );
           })}
